@@ -4,7 +4,6 @@ class GildedRose(var items: List<Item>) {
 
     fun updateQuality() {
         items.forEach { item ->
-
             if (!ItemTypes.SULFURAS.isItem(item)) {
                 when {
                     ItemTypes.BACKSTAGE.isItem(item) && item.sellIn < 6 -> {
@@ -53,8 +52,16 @@ enum class ItemTypes(val label: String) {
         override fun isItem(item: Item): Boolean {
             return item.name.startsWith(label)
         }
-    } ;
+    },
+    BASIC("basic") {
+        override fun isItem(item: Item): Boolean {
+            return true
+        }
+    }
+    ;
     
     open fun isItem(item:Item): Boolean = item.name == label
 }
+
+val Item.itemType get() = ItemTypes.entries.firstOrNull { it.isItem(this) }
 
