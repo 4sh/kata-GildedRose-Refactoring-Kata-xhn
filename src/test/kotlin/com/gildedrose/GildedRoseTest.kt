@@ -7,21 +7,24 @@ internal class GildedRoseTest {
 
     @Test
     fun `should conjured item decrease quality by 2 before sellin`() {
-        val items = listOf(Item("Conjured test", 3, 3))
-        val app = GildedRose(items)
-        app.updateQuality()
-        assertEquals(1, app.items[0].quality)
-        assertEquals(2, app.items[0].sellIn)
-
+        assertQualityUpdate(item = Item("Conjured test", 3, 10), expectedQuality = 8)
     }
 
     @Test
     fun `should conjured item decrease quality by 4 after sellin`() {
-        val items = listOf(Item("Conjured test", 0, 10))
-        val app = GildedRose(items)
+        assertQualityUpdate(item = Item("Conjured test", 0, 10), expectedQuality = 6)
+    }
+
+    fun assertQualityUpdate(item: Item, expectedQuality: Int) {
+        val sellIn = item.sellIn
+        val app = GildedRose(listOf(item))
         app.updateQuality()
-        assertEquals(6, app.items[0].quality)
-        assertEquals(-1, app.items[0].sellIn)
+        assertEquals(
+            expectedQuality,
+            app.items[0].quality,
+            "expected quality of item '${item.name}' was '$expectedQuality' but actual is '${item.quality}'"
+        )
+        assertEquals(sellIn - 1, app.items[0].sellIn)
     }
 
 }
