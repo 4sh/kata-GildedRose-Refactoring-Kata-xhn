@@ -3,6 +3,7 @@ package com.gildedrose
 const val BACKSTAGE = "Backstage passes to a TAFKAL80ETC concert"
 const val SULFURAS = "Sulfuras, Hand of Ragnaros"
 const val BRIE = "Aged Brie"
+const val CONJURED = "Conjured"
 
 class GildedRose(var items: List<Item>) {
 
@@ -21,6 +22,9 @@ class GildedRose(var items: List<Item>) {
 
                     item.name in listOf(BACKSTAGE, BRIE) -> item.addQuality(1)
                     else -> item.addQuality(-1)
+                }
+                if (item.name.startsWith(CONJURED)) {
+                    item.addQuality(-1)
                 }
 
                 item.sellIn -= 1

@@ -16,7 +16,6 @@ class GildedRoseRegression {
             Item(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 15, quality = 20),
             Item(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 10, quality = 49),
             Item(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 5, quality = 49),
-            // TODO this conjured item does not work properly yet
             Item(name = "Conjured Mana Cake", sellIn = 3, quality = 6)
         )
 
@@ -65,7 +64,7 @@ class GildedRoseRegression {
         Backstage passes to a TAFKAL80ETC concert, 14, 21
         Backstage passes to a TAFKAL80ETC concert, 9, 50
         Backstage passes to a TAFKAL80ETC concert, 4, 50
-        Conjured Mana Cake, 2, 5
+        Conjured Mana Cake, 2, 4
 
         -------- day 2 --------
         name, sellIn, quality
@@ -77,7 +76,7 @@ class GildedRoseRegression {
         Backstage passes to a TAFKAL80ETC concert, 13, 22
         Backstage passes to a TAFKAL80ETC concert, 8, 50
         Backstage passes to a TAFKAL80ETC concert, 3, 50
-        Conjured Mana Cake, 1, 4
+        Conjured Mana Cake, 1, 2
 
         -------- day 3 --------
         name, sellIn, quality
@@ -89,7 +88,7 @@ class GildedRoseRegression {
         Backstage passes to a TAFKAL80ETC concert, 12, 23
         Backstage passes to a TAFKAL80ETC concert, 7, 50
         Backstage passes to a TAFKAL80ETC concert, 2, 50
-        Conjured Mana Cake, 0, 3
+        Conjured Mana Cake, 0, 0
 
         -------- day 4 --------
         name, sellIn, quality
@@ -101,7 +100,7 @@ class GildedRoseRegression {
         Backstage passes to a TAFKAL80ETC concert, 11, 24
         Backstage passes to a TAFKAL80ETC concert, 6, 50
         Backstage passes to a TAFKAL80ETC concert, 1, 50
-        Conjured Mana Cake, -1, 1
+        Conjured Mana Cake, -1, 0
 
         -------- day 5 --------
         name, sellIn, quality
@@ -1242,7 +1241,7 @@ class GildedRoseRegression {
         Backstage passes to a TAFKAL80ETC concert, -89, 0
         Backstage passes to a TAFKAL80ETC concert, -94, 0
         Conjured Mana Cake, -96, 0
-
-
+        
+        
     """.trimIndent()
 }
