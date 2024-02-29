@@ -1,39 +1,34 @@
 package com.gildedrose
 
-const val BACKSTAGE = "Backstage passes to a TAFKAL80ETC concert"
-const val SULFURAS = "Sulfuras, Hand of Ragnaros"
-const val BRIE = "Aged Brie"
-const val CONJURED = "Conjured"
-
 class GildedRose(var items: List<Item>) {
 
     fun updateQuality() {
         items.forEach { item ->
 
-            if (item.name != SULFURAS) {
+            if (!ItemTypes.SULFURAS.isItem(item)) {
                 when {
-                    item.name == BACKSTAGE && item.sellIn < 6 -> {
+                    ItemTypes.BACKSTAGE.isItem(item) && item.sellIn < 6 -> {
                         item.addQuality(3)
                     }
 
-                    item.name == BACKSTAGE && item.sellIn < 11 -> {
+                    ItemTypes.BACKSTAGE.isItem(item) && item.sellIn < 11 -> {
                         item.addQuality(2)
                     }
 
-                    item.name in listOf(BACKSTAGE, BRIE) -> item.addQuality(1)
+                    listOf(ItemTypes.BACKSTAGE, ItemTypes.BRIE).any { it.isItem(item) } -> item.addQuality(1)
                     else -> item.addQuality(-1)
                 }
-                if (item.name.startsWith(CONJURED)) {
+                if (ItemTypes.CONJURED.isItem(item)) {
                     item.addQuality(-1)
                 }
 
                 item.sellIn -= 1
 
                 if (item.sellIn < 0) {
-                    if (item.name == BRIE) {
+                    if (ItemTypes.BRIE.isItem(item)) {
                         item.addQuality(1)
                     } else {
-                        if (item.name != BACKSTAGE) {
+                        if (!ItemTypes.BACKSTAGE.isItem(item)) {
                             item.addQuality(-1)
                         } else {
                             item.addQuality(-item.quality)
@@ -48,5 +43,18 @@ class GildedRose(var items: List<Item>) {
         quality += value
         quality = quality.coerceIn(0, 50)
     }
+}
+
+enum class ItemTypes(val label: String) {
+    BACKSTAGE("Backstage passes to a TAFKAL80ETC concert"),
+    SULFURAS("Sulfuras, Hand of Ragnaros"),
+    BRIE("Aged Brie"),
+    CONJURED("Conjured") {
+        override fun isItem(item: Item): Boolean {
+            return item.name.startsWith(label)
+        }
+    } ;
+    
+    open fun isItem(item:Item): Boolean = item.name == label
 }
 
