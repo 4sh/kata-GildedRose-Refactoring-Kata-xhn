@@ -1,28 +1,23 @@
 package com.gildedrose
 
-const val BACKSTAGE = "Backstage passes to a TAFKAL80ETC concert"
-const val SULFURAS = "Sulfuras, Hand of Ragnaros"
-const val BRIE = "Aged Brie"
-const val CONJURED = "Conjured"
-
 class GildedRose(var items: List<Item>) {
 
     fun updateQuality() {
         items.forEach { item ->
 
-            if (item.name != SULFURAS) {
+            if (!ItemType.SULFURAS.isItemOfType(item)) {
                 when {
-                    item.name == BACKSTAGE && item.sellIn < 6 -> {
+                    ItemType.BACKSTAGE.isItemOfType(item) && item.sellIn < 6 -> {
                         item.addQuality(3)
                     }
 
-                    item.name == BACKSTAGE && item.sellIn < 11 -> {
+                    ItemType.BACKSTAGE.isItemOfType(item) && item.sellIn < 11 -> {
                         item.addQuality(2)
                     }
 
-                    item.name in listOf(BACKSTAGE, BRIE) -> item.addQuality(1)
+                    listOf(ItemType.BACKSTAGE, ItemType.BRIE).any { it.isItemOfType(item) } -> item.addQuality(1)
                     else -> {
-                        if (item.name.startsWith(CONJURED)) {
+                        if (ItemType.CONJURED.isItemOfType(item)) {
                             item.addQuality(-2)
                         } else {
                             item.addQuality(-1)
@@ -33,11 +28,11 @@ class GildedRose(var items: List<Item>) {
                 item.sellIn -= 1
 
                 if (item.sellIn < 0) {
-                    if (item.name == BRIE) {
+                    if (ItemType.BRIE.isItemOfType(item)) {
                         item.addQuality(1)
                     } else {
-                        if (item.name != BACKSTAGE) {
-                            if (item.name.startsWith(CONJURED)) {
+                        if (!ItemType.BACKSTAGE.isItemOfType(item)) {
+                            if (ItemType.CONJURED.isItemOfType(item)) {
                                 item.addQuality(-2)
                             } else {
                                 item.addQuality(-1)
@@ -57,3 +52,16 @@ class GildedRose(var items: List<Item>) {
     }
 }
 
+enum class ItemType(val label: String) {
+    BACKSTAGE("Backstage passes to a TAFKAL80ETC concert"),
+    SULFURAS("Sulfuras, Hand of Ragnaros"),
+    BRIE("Aged Brie"),
+    CONJURED("Conjured") {
+        override fun isItemOfType(item: Item): Boolean {
+            return item.name.startsWith(label)
+        }
+    }
+    ;
+    
+    open fun isItemOfType(item: Item) = item.name == label
+}
