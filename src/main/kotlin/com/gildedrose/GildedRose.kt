@@ -8,68 +8,54 @@ class GildedRose(var items: List<Item>) {
 
     fun updateQuality() {
         for (item in items) {
+            if (item.name == SULFURAS) continue
             when (item.name) {
                 AGED_BRIE -> {
-                    if (item.quality < 50) {
-                        item.incrementQuality()
-                    }
+                    item.incrementQuality()
                 }
 
                 BACKSTAGE_PASS -> {
-                    if (item.quality < 50) {
-                        item.incrementQuality()
-
-                        if (item.sellIn < 11) {
-                            if (item.quality < 50) {
-                                item.incrementQuality()
-                            }
-                        }
-
-                        if (item.sellIn < 6) {
-                            if (item.quality < 50) {
-                                item.incrementQuality()
-                            }
-                        }
+                    when (item.sellIn) {
+                        in 0..5 -> item.incrementQuality(3)
+                        in 6..10 -> item.incrementQuality(2)
+                        else -> item.incrementQuality()
                     }
                 }
-                SULFURAS -> {}
+
                 else -> {
-                    if (item.quality > 0) {
-                        item.decrementQuality()
-                    }
+                    item.decrementQuality()
                 }
             }
 
-            if (item.name != SULFURAS) {
-                item.sellIn--
-            }
+
+            item.sellIn--
 
             if (item.sellIn < 0) {
-                if (item.name != AGED_BRIE) {
-                    if (item.name != BACKSTAGE_PASS) {
-                        if (item.quality > 0) {
-                            if (item.name != SULFURAS) {
-                                item.decrementQuality()
-                            }
-                        }
-                    } else {
+                when (item.name) {
+                    AGED_BRIE -> {
+                        item.incrementQuality()
+                    }
+
+                    BACKSTAGE_PASS -> {
                         item.quality = 0
                     }
-                } else {
-                    if (item.quality < 50) {
-                        item.incrementQuality()
+
+                    else -> {
+                        item.decrementQuality()
                     }
                 }
             }
         }
     }
 
-    private fun Item.incrementQuality() {
-        quality = quality + 1
+    private fun Item.incrementQuality(value: Int = 1) {
+        quality = (quality + value).coerceIn(0, 50)
     }
 
     private fun Item.decrementQuality() {
-        quality = quality - 1
+        if (quality > 0) {
+            quality -= 1
+        }
     }
 
 }
